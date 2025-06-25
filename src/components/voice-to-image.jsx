@@ -898,7 +898,7 @@ const VoiceToImage = () => {
   return (
     <div className="App bright-theme">
       {/* Header Navigation */}
-      <header className="header-nav"></header>
+      <header className="header-nav">
         <div className="nav-left">
           <button 
             className={`nav-button ${currentMode === 'single' ? 'active' : ''}`}
@@ -930,6 +930,7 @@ const VoiceToImage = () => {
             </button>
           </div>
         </div>
+      </header>div>
       </header>
 
       <button className="history-toggle" onClick={() => setShowHistory(!showHistory)}>
