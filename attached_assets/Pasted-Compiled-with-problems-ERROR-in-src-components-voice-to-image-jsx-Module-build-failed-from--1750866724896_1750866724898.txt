@@ -1,0 +1,67 @@
+Compiled with problems:
+×
+ERROR in ./src/components/voice-to-image.jsx
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\src\components\voice-to-image.jsx: Expected corresponding JSX closing tag for <div>. (933:6)
+
+  931 |           </div>
+  932 |         </div>
+> 933 |       </header>
+      |       ^
+  934 |
+  935 |       <button className="history-toggle" onClick={() => setShowHistory(!showHistory)}>
+  936 |         {showHistory ? 'Hide History' : 'Show History'}
+    at constructor (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:360:19)
+    at FlowParserMixin.raise (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:3338:19)
+    at FlowParserMixin.jsxParseElementAt (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:6913:16)
+    at FlowParserMixin.jsxParseElement (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:6935:17)
+    at FlowParserMixin.parseExprAtom (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:6945:19)
+    at FlowParserMixin.parseExprSubscripts (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10785:23)
+    at FlowParserMixin.parseUpdate (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10770:21)
+    at FlowParserMixin.parseMaybeUnary (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10750:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10603:61)
+    at FlowParserMixin.parseExprOps (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10608:23)
+    at FlowParserMixin.parseMaybeConditional (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10585:23)
+    at FlowParserMixin.parseMaybeAssign (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10538:21)
+    at C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:5735:39
+    at FlowParserMixin.tryParse (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:3676:20)
+    at FlowParserMixin.parseMaybeAssign (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:5735:18)
+    at C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10507:39
+    at FlowParserMixin.allowInAnd (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:12126:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10507:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:11386:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:5828:18)
+    at FlowParserMixin.parseExprAtom (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:11033:23)
+    at FlowParserMixin.parseExprAtom (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:6950:20)
+    at FlowParserMixin.parseExprSubscripts (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10785:23)
+    at FlowParserMixin.parseUpdate (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10770:21)
+    at FlowParserMixin.parseMaybeUnary (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10750:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10603:61)
+    at FlowParserMixin.parseExprOps (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10608:23)
+    at FlowParserMixin.parseMaybeConditional (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10585:23)
+    at FlowParserMixin.parseMaybeAssign (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10538:21)
+    at FlowParserMixin.parseMaybeAssign (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:5786:18)
+    at FlowParserMixin.parseExpressionBase (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10491:23)
+    at C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10487:39
+    at FlowParserMixin.allowInAnd (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:12121:16)
+    at FlowParserMixin.parseExpression (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:10487:17)
+    at FlowParserMixin.parseReturnStatement (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:12806:28)
+    at FlowParserMixin.parseStatementContent (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:12463:21)
+    at FlowParserMixin.parseStatementLike (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:12432:17)
+    at FlowParserMixin.parseStatementLike (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:5153:24)
+    at FlowParserMixin.parseStatementListItem (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:12412:17)
+    at FlowParserMixin.parseBlockOrModuleBlockBody (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:12980:61)
+    at FlowParserMixin.parseBlockBody (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:12973:10)
+    at FlowParserMixin.parseBlock (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:12961:10)
+    at FlowParserMixin.parseFunctionBody (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:11810:24)
+    at C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:5127:63
+    at FlowParserMixin.forwardNoArrowParamsConversionAt (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:5303:16)
+    at FlowParserMixin.parseFunctionBody (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:5127:12)
+    at FlowParserMixin.parseArrowExpression (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:11785:10)
+    at FlowParserMixin.parseParenAndDistinguishExpression (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:11398:12)
+    at FlowParserMixin.parseParenAndDistinguishExpression (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:5828:18)
+    at FlowParserMixin.parseExprAtom (C:\Users\SHIVA\OneDrive\Desktop\SoundpixD3\node_modules\@babel\parser\lib\index.js:11033:23)
+ERROR
+[eslint] 
+src\components\voice-to-image.jsx
+  Line 933:6:  Parsing error: Expected corresponding JSX closing tag for <div>. (933:6)
