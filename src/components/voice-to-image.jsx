@@ -1,10 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import LandingPage from './LandingPage';
+import GoogleAuth from './GoogleAuth';
 import '../App.css';
 
 const VoiceToImage = () => {
-  const [currentMode, setCurrentMode] = useState('single'); // 'single', 'saga', or 'video'
+  const [appState, setAppState] = useState('landing'); // 'landing', 'auth', 'home'
+  const [user, setUser] = useState(null);
+  const [currentMode, setCurrentMode] = useState('single'); // 'single', 'saga'
   const [imageSets, setImageSets] = useState([{id: 0, images: [null, null, null], prompt: '', language: 'en-IN'}]);
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
@@ -50,6 +54,13 @@ const VoiceToImage = () => {
   const RUNWAY_ML_API_KEY = 'key_96be78cd056f7123b3c17dd041dc4059945de770582f895752db13da4d29f61d580c8f5137a666f6cb84e2b237a492b0a1eae4665bdf27c49be44737a954d801';
 
   useEffect(() => {
+    // Check if user is already logged in
+    const savedUser = localStorage.getItem('soundpix_user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+      setAppState('home');
+    }
+
     // Auto-detect language based on browser settings
     const browserLang = navigator.language || 'en-US';
     if (browserLang.startsWith('te')) {
@@ -624,12 +635,6 @@ const VoiceToImage = () => {
         return;
       }
       generateSagaImages();
-    } else if (currentMode === 'video') {
-      if (videoPrompts.length === 0) {
-        alert('Please record video prompts first by speaking into the microphone.');
-        return;
-      }
-      generateVideosFromPrompts();
     } else {
       const textToUse = finalTranscript || transcript;
       
@@ -853,38 +858,77 @@ const VoiceToImage = () => {
     setSagaStory(updatedStory);
   };
 
+  const handleGetStarted = () => {
+    setAppState('auth');
+  };
+
+  const handleAuthSuccess = (userData) => {
+    setUser(userData);
+    setAppState('home');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('soundpix_user');
+    setUser(null);
+    setAppState('landing');
+    // Reset all states
+    setCurrentMode('single');
+    setImageSets([{id: 0, images: [null, null, null], prompt: '', language: 'en-IN'}]);
+    setSagaStory([]);
+    setSagaImages([]);
+    setVideoPrompts([]);
+    setGeneratedVideos([]);
+  };
+
   if (!browserSupportsSpeechRecognition) {
     return <div className="error">Your browser does not support speech recognition.</div>;
   }
 
+  // Show landing page if not authenticated
+  if (appState === 'landing') {
+    return <LandingPage onGetStarted={handleGetStarted} />;
+  }
+
+  // Show authentication page
+  if (appState === 'auth') {
+    return <GoogleAuth onAuthSuccess={handleAuthSuccess} />;
+  }
+
+  // Main application (home state)
   return (
     <div className="App bright-theme">
       {/* Header Navigation */}
-      <header className="header-nav">
+      <header className="header-nav"></header>
         <div className="nav-left">
+          <button 
+            className={`nav-button ${currentMode === 'single' ? 'active' : ''}`}
+            onClick={() => setCurrentMode('single')}
+          >
+            <i className="fas fa-image"></i> Voice to Image Mode
+          </button>
           <button 
             className={`nav-button ${currentMode === 'saga' ? 'active' : ''}`}
             onClick={() => setCurrentMode('saga')}
           >
             <i className="fas fa-book"></i> Voice to Saga Mode
           </button>
-          <button 
-            className={`nav-button ${currentMode === 'video' ? 'active' : ''}`}
-            onClick={() => setCurrentMode('video')}
-          >
-            <i className="fas fa-video"></i> Voice to Video Mode
-          </button>
           <button className="nav-button" onClick={() => alert('Custom design feature coming soon!')}>
-            <i className="fas fa-palette"></i> Your Design
+            <i className="fas fa-palette"></i> Your Designs
           </button>
           <button className="nav-button" onClick={exportSagaData}>
             <i className="fas fa-download"></i> Export
           </button>
         </div>
         <div className="nav-right">
-          <button className="nav-button profile-icon">
-            <i className="fas fa-user-circle"></i>
-          </button>
+          <div className="user-info">
+            <img src={user?.picture || 'https://via.placeholder.com/40'} alt="Profile" className="profile-image" />
+            <span className="user-name">{user?.name}</span>
+          </div>
+          <div className="profile-dropdown">
+            <button className="nav-button profile-icon" onClick={handleLogout}>
+              <i className="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -939,15 +983,12 @@ const VoiceToImage = () => {
       <div className="main-content">
         <h1 className="main-title">
           Sound Pix <span className="gradient-text">
-            {currentMode === 'saga' ? 'Voice to Saga' : 
-             currentMode === 'video' ? 'Voice to Video' : 'Voice to Image'}
+            {currentMode === 'saga' ? 'Voice to Saga' : 'Voice to Image'}
           </span>
         </h1>
         <p>
           {currentMode === 'saga' 
             ? 'Tell a story and watch it come to life through AI-generated images'
-            : currentMode === 'video'
-            ? 'Describe your video scenes verbally and generate AI videos with Runway ML'
             : 'Describe your image verbally, then generate visual magic'
           }
         </p>
@@ -1172,157 +1213,6 @@ const VoiceToImage = () => {
                       Cancel
                     </button>
                   </div>
-                </div>
-              </div>
-            )}
-          </div>
-        ) : currentMode === 'video' ? (
-          // Video Mode UI
-          <div className="video-mode">
-            <div className="voice-container">
-              <div className={`voice-animation ${isListening ? 'active' : ''}`}>
-                <div className="wave"></div>
-                <div className="wave"></div>
-                <div className="wave"></div>
-                <div className="mic-icon">
-                  <i className="fas fa-microphone"></i>
-                </div>
-              </div>
-
-              <div className="transcript-box">
-                <div className="current-language-indicator">
-                  <i className="fas fa-globe"></i> 
-                  {language === 'en-IN' ? 'English' : 
-                   language === 'hi-IN' ? 'हिंदी' : 
-                   language === 'te-IN' ? 'తెలుగు' : 'English'}
-                </div>
-                {videoPrompts.length > 0 ? (
-                  <div className="video-prompts-preview">
-                    <h4>Your Video Prompts ({videoPrompts.length} prompts):</h4>
-                    {videoPrompts.map((prompt, index) => (
-                      <div key={index} className="video-prompt">
-                        <span className="prompt-number">Prompt {index + 1}:</span>
-                        <span className="prompt-text">{prompt}</span>
-                      </div>
-                    ))}
-                    {isListening && transcript && (
-                      <div className="current-prompt">
-                        <span className="prompt-number">Prompt {videoPrompts.length + 1} (Recording...):</span>
-                        <span className="prompt-text">{transcript}</span>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  transcript || (isListening ? 'Describe your video scenes... Pause for 2 seconds between prompts, 5 seconds to stop recording.' : 'Your video prompts will appear here as you speak')
-                )}
-              </div>
-            </div>
-
-            <div className="video-controls">
-              <button 
-                onClick={isListening ? stopListening : startListening} 
-                className={`voice-button ${isListening ? 'listening' : ''}`}
-              >
-                <i className={`fas fa-${isListening ? 'microphone-slash' : 'microphone'}`}></i>
-                {isListening ? 'Stop Recording' : 'Start Recording Prompts'}
-              </button>
-
-              {videoPrompts.length > 0 && (
-                <>
-                  <button 
-                    onClick={handleGenerate} 
-                    disabled={isGeneratingVideos}
-                    className="generate-button"
-                  >
-                    <i className="fas fa-video"></i> 
-                    {isGeneratingVideos ? 'Generating Videos...' : 'Generate Videos (3 per prompt)'}
-                  </button>
-
-                  {generatedVideos.length > 0 && (
-                    <button onClick={saveVideoProject} className="save-button">
-                      <i className="fas fa-save"></i> Save Video Project
-                    </button>
-                  )}
-                </>
-              )}
-
-              <button onClick={() => {
-                resetTranscript();
-                setVideoPrompts([]);
-                setGeneratedVideos([]);
-              }} disabled={isGeneratingVideos}>
-                <i className="fas fa-eraser"></i> Clear All
-              </button>
-            </div>
-
-            {/* Video Generation Progress */}
-            {isGeneratingVideos && (
-              <div className="video-generation-progress">
-                <h4>Generating Videos...</h4>
-                <div className="progress-bar">
-                  <div 
-                    className="progress-fill" 
-                    style={{ width: `${videoGenerationProgress}%` }}
-                  ></div>
-                </div>
-                <p>{Math.round(videoGenerationProgress)}% Complete</p>
-              </div>
-            )}
-
-            {/* Generated Videos Display */}
-            {generatedVideos.length > 0 && (
-              <div className="generated-videos">
-                <h3>
-                  <i className="fas fa-video"></i> Generated Videos
-                </h3>
-                <div className="videos-grid">
-                  {videoPrompts.map((prompt, promptIndex) => {
-                    const promptVideos = generatedVideos.filter(v => v.promptIndex === promptIndex);
-                    return (
-                      <div key={promptIndex} className="prompt-videos-group">
-                        <h4>Prompt {promptIndex + 1}: {prompt}</h4>
-                        <div className="videos-row">
-                          {promptVideos.map((videoData, videoIndex) => (
-                            <div key={videoData.id} className="video-card">
-                              <div className="video-number-badge">Video {videoData.videoNumber}</div>
-                              {videoData.status === 'completed' && videoData.videoUrl ? (
-                                <video 
-                                  controls 
-                                  width="300" 
-                                  height="200"
-                                  src={videoData.videoUrl}
-                                >
-                                  Your browser does not support the video tag.
-                                </video>
-                              ) : videoData.status === 'failed' ? (
-                                <div className="video-error">
-                                  <i className="fas fa-exclamation-triangle"></i>
-                                  <p>Failed to generate</p>
-                                  <small>{videoData.error}</small>
-                                </div>
-                              ) : (
-                                <div className="video-loading">
-                                  <i className="fas fa-spinner fa-spin"></i>
-                                  <p>Generating...</p>
-                                </div>
-                              )}
-                              <div className="video-actions">
-                                {videoData.videoUrl && (
-                                  <a 
-                                    href={videoData.videoUrl} 
-                                    download={`video_${promptIndex + 1}_${videoData.videoNumber}.mp4`}
-                                    className="download-btn"
-                                  >
-                                    <i className="fas fa-download"></i>
-                                  </a>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  })}
                 </div>
               </div>
             )}
